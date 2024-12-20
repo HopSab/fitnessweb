@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sporty-Fitness Challenge</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        header {
+            background: #0066cc;
+            color: #fff;
+            padding: 1rem 0;
+            text-align: center;
+        }
+
+        nav a {
+            color: #fff;
+            margin: 0 1rem;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        main {
+            padding: 1rem 2rem;
+        }
+
+        section {
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #0066cc;
+        }
+
+        form label {
+            display: block;
+            margin-top: 1rem;
+        }
+
+        form input {
+            padding: 0.5rem;
+            margin: 0.5rem 0;
+            width: 100%;
+        }
+
+        button {
+            background: #0066cc;
+            color: #fff;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #005bb5;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background: #0066cc;
+            color: #fff;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Sporty-Fitness: 30-Day Fitness Challenge</h1>
+        <nav>
+            <a href="#details">Challenge Details</a>
+            <a href="#registration">Register</a>
+            <a href="#gamify">Gamify Fitness</a>
+            <a href="#progress">Track Progress</a>
+            <a href="#bmi">BMI Calculator</a>
+            <a href="#diet">Balanced Diet</a>
+        </nav>
+    </header>
+    <main>
+        <section id="details">
+            <h2>Challenge Details</h2>
+            <p>Join our 30-day fitness challenge to build strength, endurance, and a healthier lifestyle. Each day includes structured workouts and rest days for recovery.</p>
+            <ul>
+                <li>Daily workout plans</li>
+                <li>Rest days for recovery</li>
+                <li>Tracking your progress</li>
+                <li>Community support</li>
+            </ul>
+        </section>
+
+        <section id="registration">
+            <h2>Registration</h2>
+            <form id="registrationForm">
+                <label for="name">Full Name:</label>
+                <input type="text" id="name" name="name" required>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                <button type="submit">Register</button>
+            </form>
+            <p id="registerStatus"></p>
+        </section>
+
+        <section id="gamify">
+            <h2>Gamify Your Fitness</h2>
+            <p>Stay motivated with leaderboards, badges, and achievements!</p>
+            <canvas id="leaderboardChart" width="400" height="200"></canvas>
+        </section>
+
+        <section id="progress">
+            <h2>Tracking Your Progress</h2>
+            <canvas id="progressChart" width="400" height="200"></canvas>
+        </section>
+
+        <section id="bmi">
+            <h2>Body Mass Index (BMI) Calculator</h2>
+            <form id="bmiForm">
+                <label for="weight">Weight (kg):</label>
+                <input type="number" id="weight" name="weight" required>
+                <label for="height">Height (cm):</label>
+                <input type="number" id="height" name="height" required>
+                <button type="button" onclick="calculateBMI()">Calculate BMI</button>
+            </form>
+            <p id="bmiResult"></p>
+        </section>
+
+        <section id="diet">
+            <h2>Importance of a Balanced Diet</h2>
+            <p>A balanced diet is crucial for sustaining energy and optimizing workout results. Include:</p>
+            <ul>
+                <li>Proteins for muscle repair</li>
+                <li>Carbohydrates for energy</li>
+                <li>Healthy fats for recovery</li>
+                <li>Vitamins and minerals for overall health</li>
+            </ul>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Sporty-Fitness</p>
+    </footer>
+
+    <script>
+        // Handle Registration
+        document.getElementById('registrationForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            document.getElementById('registerStatus').textContent = Thank you for registering, ${name}!;
+            this.reset();
+        });
+
+        // BMI Calculator
+        function calculateBMI() {
+            const weight = parseFloat(document.getElementById('weight').value);
+            const height = parseFloat(document.getElementById('height').value) / 100;
+            if (weight > 0 && height > 0) {
+                const bmi = (weight / (height * height)).toFixed(2);
+                let category = '';
+                if (bmi < 18.5) category = 'Underweight';
+                else if (bmi < 24.9) category = 'Normal';
+                else if (bmi < 29.9) category = 'Overweight';
+                else category = 'Obese';
+                document.getElementById('bmiResult').textContent = Your BMI is ${bmi} (${category}).;
+            } else {
+                alert('Please enter valid weight and height values.');
+            }
+        }
+
+        // Leaderboard and Progress Charts (using Chart.js)
+        document.addEventListener('DOMContentLoaded', function () {
+            const leaderboardCtx = document.getElementById('leaderboardChart').getContext('2d');
+            new Chart(leaderboardCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Alice', 'Bob', 'Charlie', 'Diana'],
+                    datasets: [{
+                        label: 'Points',
+                        data: [90, 80, 85, 100],
+                        backgroundColor: ['#4caf50', '#ff9800', '#2196f3', '#f44336']
+                    }]
+                },
+                options: {
+                    scales: { y: { beginAtZero: true } }
+                }
+            });
+
+            const progressCtx = document.getElementById('progressChart').getContext('2d');
+            new Chart(progressCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                    datasets: [{
+                        label: 'Fitness Level',
+                        data: [50, 65, 80, 95],
+                        fill: false,
+                        borderColor: '#0066cc',
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    scales: { y: { beginAtZero: true } }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
